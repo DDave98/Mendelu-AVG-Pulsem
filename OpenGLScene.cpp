@@ -113,6 +113,16 @@ void OpenGLScene::sync()
     m_renderer->setWindow(window());
 }
 
+std::vector<Position> m_positions1
+{
+    Position{ 0.0, 0.0, 0.0},
+    Position{ 1.0, 0.0, 0.0},
+    Position{ 0, 0.0, 1.0},
+    Position{1.5, 0.0, 1.0},
+    Position{-1.5, 0.0, 1.0},
+    Position{1.5, 0.0, -1.0},
+};
+
 ObjectProperty property1 = ObjectProperty
 {
     Position{1.5, 0.0, 1.0},
@@ -160,9 +170,20 @@ void OpenGLSceneRenderer::init()
                                            Position{ 1.5, 0.0, 1.0},
                                            Rotation{ 0.0, {0.0, 1.0, 0.0}}
         ));*/
-        m_treeobjects.push_back(new treeobject(program, trees, property1));
-        m_treeobjects.push_back(new treeobject(program, trees, property2));
-        m_treeobjects.push_back(new tree2object(program, trees2, property3));
+        //m_treeobjects.push_back(new treeobject(program, trees, property1));
+        //m_treeobjects.push_back(new treeobject(program, trees, property2));
+        //m_treeobjects.push_back(new tree2object(program, trees2, property3));
+
+        for(auto object: m_positions1)
+        {
+            ObjectProperty prop = ObjectProperty
+                {
+                    object,
+                    Rotation{ 0.0, 0.0, 0.0},
+                    Scale{0.6, 0.6, 0.6}
+                };
+            m_treeobjects.push_back(new treeobject(program, trees, prop));
+        }
     }
 }
 
@@ -194,16 +215,18 @@ void OpenGLSceneRenderer::paint()
                 {0.0,0.0,0.0},
                 {0.0,1.0,0.0});
 
-    modelViewMatrix.rotate(m_t, 0.0f, 1.0f, 0.0f);
+    //odelViewMatrix.rotate(m_t, 0.0f, 1.0f, 0.0f);
     //qDebug() << "m_t: " << m_t;
 
     for(auto object: m_objects)
     {
         Rotation objRotation = object->getRotation();
         Position objPosition = object->getPosition();
+        Scale objScale = object->getScale();
         QMatrix4x4 tmpModelViewMatrix = modelViewMatrix;
         tmpModelViewMatrix.translate(objPosition.x, objPosition.y, objPosition.z);
         tmpModelViewMatrix.rotate(objRotation.x, objRotation.y, objRotation.z);
+        tmpModelViewMatrix.scale(objScale.x, objScale.y, objScale.z);
 
         object->render(projectionMatrix*tmpModelViewMatrix);
     }
@@ -217,6 +240,7 @@ void OpenGLSceneRenderer::paint()
 
         tmpModelViewMatrix.translate(objPosition.x, objPosition.y, objPosition.z);
         tmpModelViewMatrix.rotate(objRotation.x, objRotation.y, objRotation.z);
+        tmpModelViewMatrix.scale(objScale.x, objScale.y, objScale.z);
         object->render(projectionMatrix*tmpModelViewMatrix);
     }
 
