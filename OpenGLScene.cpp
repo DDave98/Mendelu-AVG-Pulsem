@@ -212,7 +212,7 @@ void OpenGLSceneRenderer::paint()
     {
         Rotation objRotation = object->getRotation();
         Position objPosition = object->getPosition();
-        Scale objScale = objcet->getScale();
+        Scale objScale = object->getScale();
         QMatrix4x4 tmpModelViewMatrix = modelViewMatrix;
 
         tmpModelViewMatrix.translate(objPosition.x, objPosition.y, objPosition.z);
