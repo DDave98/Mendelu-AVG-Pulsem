@@ -17,7 +17,7 @@ public:
     virtual void render(QMatrix4x4 transformationMatrix) = 0;
     Position getPosition(){ return m_property.position; }
     Rotation getRotation(){ return m_property.rotation; }
-    Rotation getScale(){ return m_property.scale; }
+    Scale getScale(){ return m_property.scale; }
 };
 
 #endif // GRAPHICALOBJECT_H
